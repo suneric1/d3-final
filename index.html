@@ -193,8 +193,8 @@ var tooltipChart = tooltip
 var energyUses = {};
 
 queue()
-    .defer(d3.json, "countries.json")
-    .defer(d3.csv, "energy_use_kgpc.csv", typeAndSet)
+    .defer(d3.json, "data/countries.json")
+    .defer(d3.csv, "data/energy_use_kgpc.csv", typeAndSet)
     .await(ready);
 
 function ready(error, world, energy) {
