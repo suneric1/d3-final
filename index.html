@@ -56,6 +56,9 @@
             stroke: #000;
             stroke-width: 0.5px;
         }
+        rect.bars_co2.selected{
+            fill: #FF1919;
+        }
         .legend text.label{
             font-size: 10px;
             font-family: Helvetica, sans-serif;
@@ -203,9 +206,14 @@ function mapSection(world, energy){
             if(d.id != "ATA")
                 return path(d);
         })
+        .attr("id", function(d){
+            if(d.id != "ATA")
+                return d.id;
+        })
         .on("mouseover", mouseover)
         .on("mouseout", function() {
           d3.select(this).classed("selected", false);
+            disHighlight(d3.select(this).attr("id"));
           tooltip.transition().duration(300)
             .style("opacity", 0);
         });
@@ -428,8 +436,11 @@ function mapSection(world, energy){
 
     function mouseover(d){
 
-      d3.select(this).classed("selected", true);
+//      d3.select(this).classed("selected", true);
       d3.select(this).moveToFront();
+        var thisId = d3.select(this).attr("id");
+        
+        highlight(thisId);
 
       tooltip.transition().duration(100)
        .style("opacity", 0.9);
@@ -557,6 +568,9 @@ function barChartSection(emissions){
         rects
             .enter()
             .append("rect")
+            .attr("id",function(d){
+                return d["Country Code"];
+            })
             .attr("class", "bars_co2")
             .attr("fill", "steelblue")
             .attr("width", 0);
@@ -580,6 +594,14 @@ function barChartSection(emissions){
             })
             .attr("height", yScale.rangeBand())
             .attr("fill", function(d){return colorScale(+d[year]);});
+        
+        rects
+            .on("mouseover",function(){
+            highlight(d3.select(this).attr("id"));
+        })
+            .on("mouseout",function(){
+            disHighlight(d3.select(this).attr("id"));
+        })
             
         var labels = svg.selectAll("text.value")
             .data(data, function(d){
@@ -603,7 +625,6 @@ function barChartSection(emissions){
             .attr("y",function(d){return yScale(d["Country Name"]);})
             .attr("dx",5)
             .attr("dy",11);
-            
     }
 }
 
@@ -618,5 +639,13 @@ d3.selection.prototype.moveToFront = function() {
     this.parentNode.appendChild(this);
   });
 };
+    
+function highlight(id){
+    d3.selectAll("#"+id).classed("selected", true);
+}
+    
+function disHighlight(id){
+    d3.selectAll("#"+id).classed("selected", false);
+}
 
 </script>
