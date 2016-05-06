@@ -79,6 +79,7 @@ function mapSection(world, energy){
     .select("text.label")
     .attr("transform", "translate(20,12)");
     
+    
     //tooltipChart 
     var ttfh = 120;
     var ttfw = 200;
