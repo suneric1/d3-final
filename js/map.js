@@ -73,6 +73,12 @@ function mapSection(world, energy){
       .attr("transform", "translate(20," + (height-150) +")")
       .call(legend);
     
+    d3.selectAll(".cell").classed(".cell",false).attr("transform",function(d,i){
+        return "translate(0," + i*15 + ")";
+    })
+    .select("text.label")
+    .attr("transform", "translate(20,12)");
+    
     //tooltipChart 
     var ttfh = 120;
     var ttfw = 200;
