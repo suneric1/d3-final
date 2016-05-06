@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<!-- This map code and design were inspired by the tutorial in Flowing Data: http://flowingdata.com/2015/02/19/make-an-interactive-map-with-category-filters/ -->
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:900' rel='stylesheet' type='text/css'>
+    <title>Global Energy Use Overview in 2012</title>
+    <style>
+        body{
+            font-family: 'Open Sans', sans-serif;
+        }
+        h2{
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            margin: 30px;
+        }
+        p{
+            margin-bottom: 30px;
+        }
+        rect.overlay{
+            fill: none;
+        }
+        .tooltip {
+            position: absolute;
+            z-index: 10;
+            text-align: left;
+            width: 200px;
+            padding: 10px;
+            font-size: 10px;
+            font-family: Helvetica, sans-serif;
+            background: #ffffff;
+            pointer-events: none;
+            opacity: 0;
+            border: #ccc 1px solid;
+        }
+        .tooltip h3 {
+          font-size: 14px; margin: 0 0 7px 0;
+          line-height: 1.2em;
+        }
+        .tooltip .val{
+            float: right;
+            font-size: 20px;
+        }
+        .tooltip .title{
+            float: left;
+        }
+        .tooltip .desc{
+/*            float: left;*/
+            font-size: 8px;
+            margin-bottom: 3px;
+        }
+        .countries {
+          stroke: #fff;
+          stroke-linejoin: round;
+        }
+        .countries path.selected {
+            stroke: #000;
+            stroke-width: 0.5px;
+        }
+        rect.bars_co2.selected{
+            fill: #FF1919;
+        }
+        .legend text.label{
+            font-size: 10px;
+            font-family: Helvetica, sans-serif;
+        }
+        .scalebutton {
+            cursor: pointer;
+        }
+        .tooltipChart .line{
+            fill: none;
+            stroke-width: 1.5px;
+            transition: 0.1s;
+            stroke: #E3314C;
+        }
+        .tooltipChart .area{
+            fill: #E3314C;
+            transition: 0.1s;
+            stroke: none;
+            opacity: 0.2;
+        }
+        .barChart.bars_co2 path, .scatterPlot path, .lineChart path, .connectedScatter path{
+            fill: none;
+        }
+        .axis .tick:first-child line, .axis line{
+            stroke: #999;
+            stroke-dasharray: 5,0;
+        }
+        
+        .tick line{
+            stroke: #999;
+            stroke-dasharray: 2,5;
+        }
+        text.value{
+            font-size: 12px;
+        }
+        .bars_co2 .tick text, .scatterPlot .tick text, .connectedScatter .tick text{
+            font-size: 12px;
+            font-style: italic;
+        }
+        .scatterPlot circle{
+            fill: #E3314C;
+            opacity: 0.3;
+        }
+        .scatterPlot circle.selected{
+            transition: all 0.2s;
+            fill: #E3314C;
+            opacity: 1;
+            stroke-width: 2px;
+            stroke: #fc5;
+        }
+        .lineChart .line{
+            fill: none;
+            stroke-width: 1px;
+            transition: 0.1s;
+            stroke: #aaa;
+            stroke-opacity: 0.3;
+        }
+        .lineChart .line.selected{
+            stroke-width: 1.5px;
+            stroke: #000;
+            stroke-opacity: 0.8;
+        }
+        .lineChart .outlier .line{
+            stroke-width: 1.5px;
+            stroke: #E3314C;
+            stroke-opacity: 0.8;
+        }
+        .lineChart .outlier circle{
+            fill: #E3314C;
+            stroke-opacity: 0;
+        }
+        .lineChart .outlier text.label{
+            fill: #E3314C;
+            stroke-opacity: 0;
+            font-family: 'Roboto', sans-serif;
+            font-size: 12px;
+        }
+        .lineChart text.label{
+            fill: #000;
+            stroke-opacity: 0;
+            font-family: 'Roboto', sans-serif;
+            font-size: 12px;
+        }
+        .connectedScatter line.connect{
+            stroke: #aaa;
+            stroke-opacity: 0.2;
+        }
+        .connectedScatter circle{
+            fill: #aaa;
+            fill-opacity: 0;
+            stroke: #aaa;
+            stroke-opacity: 0.4;
+        }
+        .connectedScatter text.label{
+            fill: #aaa;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .connectedScatter .current line.connect{
+            stroke: #E3314C;
+        }
+        .connectedScatter .current circle{
+            fill: #E3314C;
+            stroke: #E3314C;
+        }
+        .connectedScatter .current text.label{
+            fill: #E3314C;
+            opacity: 1;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .connectedScatter circle.selected{
+            fill-opacity: 0.7;
+            stroke-opacity: 1;
+            stroke-width: 2px;
+        }
+        button{
+            background: #fff;
+            color: #E3314C;
+            border: 1px solid #E3314C;
+            padding: 7px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            border-radius: 4px;
+            outline: none;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        button:hover{
+            background: #ffcccc;
+            cursor: pointer;
+        }
+        button.selected{
+            background: #E3314C;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<div class="row col-sm-8 col-sm-offset-2 main">
+
+<h2>Global Energy Use & CO2 Emissions Overview</h2>
+<p>Source: <a href="http://www.iea.org/statistics/">OECD/IEA</a>.<br/> As global warming is becoming a more and more severe problem, energy use is one of the major factors to be blame. This map shows the amount of energy used per capita in 2012, of oil equivalent.</p>
+
+<div id="mapViz"></div>
+
+<h3>CO2 Emissions (metric tons per capita)</h3>
+<p>The bar chart below shows 10 countries with highest per-capita CO2 emissions.</p>
+
+<button id="emissionBar" type="button" class="bar selected">Top Emissions</button><button id="energyBar" type="button" class="bar">Top Energy Use</button><button id="lowFossilBar" type="button" class="bar">Lowest Fossil Percentage</button>
+
+<div id="barViz"></div>
+
+<h3>Energy Use vs. CO2 Emissions</h3>
+<p>This scatter plot shows per-capita Energy Use vs CO2 emissions across countries.</p>
+
+<div id="scatterViz"></div>
+
+<h3>Energy Use in Years</h3>
+<p>Line chart.</p>
+
+<div id="lineViz"></div>
+
+<h3>Energy Use vs. CO2 Emissions in Years</h3>
+<p>Connected scatter plot.</p>
+
+<div id="connectedViz"></div>
+
+</div>
+
+<div id="tooltip" class="tooltip">
+    <h3 class="name"></h3>
+    <div class="title">Energy Use</div>
+    <div class="val"></div><br/>
+    <div class="desc">(kg of oil equivalent per capita)</div>
+</div>
+
+<div id="tooltipScatter" class="tooltip">
+    <h3 class="name"></h3>
+    <div class="title ene">Energy Use</div>
+    <div class="val ene"></div><br/>
+    <div class="desc ene">(kg of oil equivalent per capita)</div>
+    <div class="title co2">CO2 Emissions</div>
+    <div class="val co2"></div><br/>
+    <div class="desc co2">(metric tons per capita)</div>
+</div>
+
+<div id="tooltipLine" class="tooltip">
+    <h3 class="name"></h3>
+    <div class="title ene">Energy Use</div>
+    <div class="val ene"></div><br/>
+    <div class="desc ene">(kg of oil equivalent per capita)</div>
+</div>
+
+<div id="tooltipIceland" class="tooltip">
+    <h3 class="name"></h3>
+    <div class="title ene">Energy Use</div>
+    <div class="val ene"></div><br/>
+    <div class="desc ene">(kg of oil equivalent per capita)</div>
+    <div class="title co2">CO2 Emissions</div>
+    <div class="val co2"></div><br/>
+    <div class="desc co2">(metric tons per capita)</div>
+</div>
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="https://d3js.org/queue.v1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.9.0/d3-legend.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/map.js"></script>
+<script src="js/barChart.js"></script>
+<script src="js/scatter.js"></script>
+<script src="js/lineChart.js"></script>
+<script src="js/connectedScatter.js"></script>
+<script src="js/mfreeman_scroller.js"></script>
+<script src="js/scroller_settings2.js"></script>
+<!--<script src="js/d3.v3.min.js"></script>-->
+<!--<script src="js/d3-legend.min.js"></script>-->
+<!--<script src="js/queue.v1.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.js"></script>-->

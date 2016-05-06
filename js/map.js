@@ -1,14 +1,14 @@
 function mapSection(world, energy){
 
-    var width = 1000,
-        height = 550,
+    var width = 800,
+        height = 400,
         center = [width / 2, height / 2];
 
     var colorScale = d3.scale.linear().range(["#faf5f5", "#a3314C"]).interpolate(d3.interpolateLab);
 
     var projection = d3.geo.mercator()
-        .scale(150)
-        .translate([width/2-20, height/2+30]);
+        .scale(110)
+        .translate([width/2-20, height/2+20]);
 
     var path = d3.geo.path()
         .projection(projection);
@@ -34,7 +34,7 @@ function mapSection(world, energy){
     var g = svg.append("g");
     
     colorScale.domain([0,20000]);
-
+    
     g.append("g")
         .attr("class", "countries")
         .selectAll("path")
@@ -204,14 +204,14 @@ function mapSection(world, energy){
 
         var tooltipChart = tooltip
             .append("svg")
-            .attr("class","lineChart")
+            .attr("class","tooltipChart")
             .attr("width",ttfw)
             .attr("height",ttfh)
             .append("g")
             .attr("transform","translate(" + margin.left + "," + margin.top + ")");
 
         var years = d3.keys(energy[0]).filter(function(d){return d.startsWith("1") || d.startsWith("2");});
-        years.splice(years.length-2,2);
+        years.splice(years.length-3,3);
         console.log(years);
 
         energy.forEach(function(d,i){
@@ -246,8 +246,6 @@ function mapSection(world, energy){
             .attr("d",area);
 
         tooltipChart
-            .append("g")
-            .attr("class","linechart")
             .append("path")
             .attr("class","line")
             .attr("d",line);
@@ -268,7 +266,7 @@ function mapSection(world, energy){
 
         tooltipChart.append("g")
             .call(yAxis)
-            .attr("class","y axis lineChart")
+            .attr("class","y axis")
             .selectAll("text")
             .style("text-anchor","end");
     }
@@ -304,11 +302,11 @@ function mapSection(world, energy){
             .datum(energyUses[d.id])
             .attr("d",area);
 
-        d3.select(".linechart path")
+        d3.select(".tooltipChart .line")
             .datum(energyUses[d.id])
             .attr("d",line);
 
-        d3.select(".y.axis.lineChart")
+        d3.select(".tooltipChart .y.axis")
             .call(yAxis);
 
     } // end mouseover

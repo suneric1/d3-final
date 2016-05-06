@@ -4,15 +4,44 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:900' rel='stylesheet' type='text/css'>
-    <title>Global Energy Use Overview in 2012</title>
+    <title>Iceland Found the Right Way to Use Energy</title>
     <style>
         body{
             font-family: 'Open Sans', sans-serif;
         }
+
+        #graphic {
+          padding-top: 60px;
+        }
+
+        #sections {
+            pointer-events: none;
+          position: relative;
+          display: inline-block;
+/*          width: 250px;*/
+          top: 0px;
+          z-index: 5;
+          padding-bottom: 20px;
+        }
+
+        .vizDiv {
+          display: none;
+          position: fixed;
+          top: 150px;
+          z-index: 1;
+          margin-left: 30px;
+          font-size: 10px;
+        }
+        
         h2{
             font-family: 'Roboto', sans-serif;
             text-align: center;
             margin: 30px;
+            margin-top: 120px;
+        }
+        #sections h3{
+            font-size: 20px;
+            margin-bottom: 30px;
         }
         p{
             margin-bottom: 30px;
@@ -67,25 +96,26 @@
         .scalebutton {
             cursor: pointer;
         }
-        path.line{
+        .tooltipChart .line{
             fill: none;
             stroke-width: 1.5px;
             transition: 0.1s;
             stroke: #E3314C;
         }
-        path.area{
+        .tooltipChart .area{
             fill: #E3314C;
             transition: 0.1s;
             stroke: none;
             opacity: 0.2;
         }
-        .barChart.bars_co2 path, .scatterPlot path{
+        .barChart.bars_co2 path, .scatterPlot path, .lineChart path, .connectedScatter path{
             fill: none;
         }
         .axis .tick:first-child line, .axis line{
             stroke: #999;
             stroke-dasharray: 5,0;
         }
+        
         .tick line{
             stroke: #999;
             stroke-dasharray: 2,5;
@@ -93,8 +123,12 @@
         text.value{
             font-size: 12px;
         }
-        .bars_co2 .tick text, .scatterPlot .tick text{
+        .scatterPlot .tick text, .connectedScatter .tick text{
             font-size: 12px;
+            font-style: italic;
+        }
+        .bars_co2 .tick text{
+            font-size: 10px;
             font-style: italic;
         }
         .scatterPlot circle{
@@ -108,32 +142,157 @@
             stroke-width: 2px;
             stroke: #fc5;
         }
+        .lineChart .line{
+            fill: none;
+            stroke-width: 1px;
+            transition: 0.1s;
+            stroke: #aaa;
+            stroke-opacity: 0.3;
+        }
+        .lineChart .line.selected{
+            stroke-width: 1.5px;
+            stroke: #000;
+            stroke-opacity: 0.8;
+        }
+        .lineChart .outlier .line{
+            stroke-width: 1.5px;
+            stroke: #E3314C;
+            stroke-opacity: 0.8;
+        }
+        .lineChart .outlier circle{
+            fill: #E3314C;
+            stroke-opacity: 0;
+        }
+        .lineChart .outlier text.label, .scatterPlot text.label{
+            fill: #E3314C;
+            stroke-opacity: 0;
+            font-family: 'Roboto', sans-serif;
+            font-size: 12px;
+        }
+        .lineChart text.label{
+            fill: #000;
+            stroke-opacity: 0;
+            font-family: 'Roboto', sans-serif;
+            font-size: 12px;
+        }
+        .connectedScatter line.connect{
+            stroke: #aaa;
+            stroke-opacity: 0.2;
+        }
+        .connectedScatter circle{
+            fill: #aaa;
+            fill-opacity: 0;
+            stroke: #aaa;
+            stroke-opacity: 0.4;
+        }
+        .connectedScatter text.label{
+            fill: #aaa;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .connectedScatter .current line.connect{
+            stroke: #E3314C;
+        }
+        .connectedScatter .current circle{
+            fill: #E3314C;
+            stroke: #E3314C;
+        }
+        .connectedScatter .current text.label{
+            fill: #E3314C;
+            opacity: 1;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .connectedScatter circle.selected{
+            fill-opacity: 0.7;
+            stroke-opacity: 1;
+            stroke-width: 2px;
+        }
+        button{
+            background: #fff;
+            color: #E3314C;
+            border: 1px solid #E3314C;
+            padding: 7px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            border-radius: 4px;
+            outline: none;
+            margin-right: 2px;
+            margin-bottom: 10px;
+            font-size: 11px;
+        }
+        button:hover{
+            background: #ffcccc;
+            cursor: pointer;
+        }
+        button.selected{
+            background: #E3314C;
+            color: #fff;
+        }
+        .axisTitle{
+            font-size: 30px;
+            opacity: 0.2;
+            font-family: monospace;
+        }
     </style>
 </head>
 
-<div class="row col-sm-8 col-sm-offset-2 main">
+<div class="row col-sm-10 col-sm-offset-1 container">
+   <div class="col-sm-10 col-sm-offset-1">
+        <h2>Iceland Found the Right Way to Use Energy</h2>
+       <p style="text-align:center">By <span style="font-style:italic">Zhiming Sun</span></p>
+       </div>
+   
+    <div id="graphic">
+        <div id="sections">
+            <section class="step col-sm-6 col-sm-offset-3">
+                <p>As global warming is becoming a more and more severe problem, energy use is one of the major factors to be blame, since it's a huge source of Greenhouse Gas. However, it's impossible to reduce the consumption of energy, not only because the immense demand for human development, but also due to the continuously growing population. An effective way to save our planet is to use energy efficiently and to use renewable energy.</p>
+            </section>
+            
+            <section class="step col-sm-4 col-sm-offset-8">
+                <h3>Energy Use Over the World (metric tons per capita)</h3>
+                <p>This map shows the amount of energy used per capita in each country in 2012, of oil equivalent. You can see how the amount varies over years when you hover on a country. It's good to see that most developed countries seem to slow down the increase and even start to decrease energy use. </p><p>However, developing countries, such as China and those in South America, are in a trend of boost.</p>
+            </section>
+            
+            <section class="step col-sm-4 col-sm-offset-8">
+                <p>The country that stands out is Iceland. It has much higher use of energy and has dramatically increased in the recent years. In the chart below, you can see it's even the country with highest energy use. What's more, it's also among the 10 countries with lowest percentage of fossil energy consumption.</p>
+                <div id="barViz" style="pointer-events: all">
+                    <button id="emissionBar" type="button" class="bar selected">Top Emissions</button>
+                    <button id="energyBar" type="button" class="bar">Top Energy Use</button>
+                    <button id="lowFossilBar" type="button" class="bar">Lowest Fossil Percentage</button>
+                    <div class="desc">Hover on bars to locate countries</div>
+                </div>
+            </section>
 
-<h2>Global Energy Use & CO2 Emissions Overview</h2>
-<p>Source: <a href="http://www.iea.org/statistics/">OECD/IEA</a>.<br/> As global warming is becoming a more and more severe problem, energy use is one of the major factors to be blame. This map shows the amount of energy used per capita in 2012, of oil equivalent.</p>
+            <section class="step col-sm-4 col-sm-offset-8">
+                <h3>Energy Use vs. CO2 Emissions</h3>
+                <p>This scatter plot shows per-capita Energy Use vs CO2 emissions across countries. As far as we know, they should be proportional to each other. Surprisingly, though Iceland has the highest energy use, its CO2 emissions are incredibly low. </p>
+                <p>It's the magic of renewable energy. According to Icelandic Energy Portal, about 85 percent of total primary energy supply in Iceland is derived from domestically produced renewable energy sources.</p>
+            </section>
 
-<div id="mapViz"></div>
+            <section class="step col-sm-4 col-sm-offset-8">
+                <h3>Energy Use in Years</h3>
+                <p>Other than Iceland, there are 3 totally different types of country with different way using energy. Countries in Middle East, like Qatar, typically use a lot of energy, while producing great amount of emissions. Developed countries like the U.S, as we mentioned above, has relatively high energy consumption, but the amount is stable. In terms of China, though its energy use is not that huge per capita, it's population makes things worse.</p>
+            </section>
 
-<h3>CO2 Emissions (metric tons per capita)</h3>
-<p>The bar chart below shows 10 countries with highest per-capita CO2 emissions.</p>
-
-<div id="barViz"></div>
-
-<h3>Energy Use vs. CO2 Emissions</h3>
-<p>This scatter plot shows per-capita Energy Use vs CO2 emissions across countries.</p>
-
-<div id="scatterViz"></div>
-
+            <section class="step col-sm-4 col-sm-offset-8">
+                <h3>How Energy Use and CO2 Emissions Changed</h3>
+                <p>Here we can be definitely shocked by Iceland. While there are sufficient fossil resources in Qatar, fossil energy in Iceland is almost 100% imported. However, it exploits a bunch of clean energy resources, the majority of which is geothermal energy. That's why with such a great amount of energy consumption, it can still avoid destroying our planet.</p>
+            </section>
+        </div>
+        <div id="mapViz" class="vizDiv">
+        <p>Source: <a href="http://www.iea.org/statistics/">OECD/IEA</a>.<br/></p>
+        </div>
+        <div id="scatterViz" class="vizDiv"></div>
+        <div id="lineViz" class="vizDiv"></div>
+        <div id="connectedViz" class="vizDiv"></div>
+    </div>
 </div>
 
 <div id="tooltip" class="tooltip">
     <h3 class="name"></h3>
     <div class="title">Energy Use</div>
-    <div class="val"></div>
+    <div class="val"></div><br/>
     <div class="desc">(kg of oil equivalent per capita)</div>
 </div>
 
@@ -147,14 +306,36 @@
     <div class="desc co2">(metric tons per capita)</div>
 </div>
 
+<div id="tooltipLine" class="tooltip">
+    <h3 class="name"></h3>
+    <div class="title ene">Energy Use</div>
+    <div class="val ene"></div><br/>
+    <div class="desc ene">(kg of oil equivalent per capita)</div>
+</div>
+
+<div id="tooltipIceland" class="tooltip">
+    <h3 class="name"></h3>
+    <div class="title ene">Energy Use</div>
+    <div class="val ene"></div><br/>
+    <div class="desc ene">(kg of oil equivalent per capita)</div>
+    <div class="title co2">CO2 Emissions</div>
+    <div class="val co2"></div><br/>
+    <div class="desc co2">(metric tons per capita)</div>
+</div>
+
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="https://d3js.org/queue.v1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.9.0/d3-legend.js"></script>
 <script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script src="js/main.js"></script>
 <script src="js/map.js"></script>
 <script src="js/barChart.js"></script>
 <script src="js/scatter.js"></script>
+<script src="js/lineChart.js"></script>
+<script src="js/connectedScatter.js"></script>
+<script src="js/mfreeman_scroller.js"></script>
+<script src="js/scroller_settings2.js"></script>
 <!--<script src="js/d3.v3.min.js"></script>-->
 <!--<script src="js/d3-legend.min.js"></script>-->
 <!--<script src="js/queue.v1.min.js"></script>-->

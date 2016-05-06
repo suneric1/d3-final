@@ -1,7 +1,7 @@
 function scatterSection(energy, emissions){
-    var fullWidth = 600,
-        fullHeight = 300,
-        margin = {top:20, bottom:50, left:150, right:50},
+    var fullWidth = 750,
+        fullHeight = 400,
+        margin = {top:20, bottom:50, left:70, right:50},
         width = fullWidth - margin.left - margin.right,
         height = fullHeight - margin.top - margin.bottom;
             
@@ -42,6 +42,18 @@ function scatterSection(energy, emissions){
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis);
+    
+    svg.append("text")
+        .text("CO2 EMISSIONS")
+        .attr("class", "axisTitle")
+        .attr("transform","rotate(-90),translate(-240,-300)")
+        .attr("y", height);
+    
+    svg.append("text")
+        .text("ENERGY USE")
+        .attr("class", "axisTitle")
+        .attr("transform","translate(350,-10)")
+        .attr("y", height);
     
 //    svg.select("g.y.axis")
 //        .append("line")
@@ -98,6 +110,18 @@ function scatterSection(energy, emissions){
             .attr("r", 4)
             .on("mouseover", mouseover)
             .on("mouseout", mouseout);
+    
+        d3.select(".scatterPlot circle#ISL").attr("r", 6).classed("selected",true);
+        svg.append("text")
+            .text("Iceland")
+            .attr("x",d3.select(".scatterPlot circle#ISL").attr("cx"))
+            .attr("y",d3.select(".scatterPlot circle#ISL").attr("cy"))
+            .style("text-anchor","end")
+            .classed("label", true)
+            .attr("dx",-10)
+            .attr("dy",3);
+                  
+    
             
         function mouseover(d){
             d3.select(this).moveToFront();
@@ -126,7 +150,10 @@ function scatterSection(energy, emissions){
             tooltipScatter.transition().duration(100)
                 .style("opacity", 0);
             
-            d3.select(this).transition().duration(100).attr("r", 4);
+            if(thisId!="ISL")
+                d3.select(this).transition().duration(100).attr("r", 4);
+    
+            d3.select(".scatterPlot circle#ISL").classed("selected",true);
         }
     }
 }
