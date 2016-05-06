@@ -43,6 +43,18 @@ function connectedScatter(energy, emissions){
         .attr("class", "y axis")
         .call(yAxis);
     
+    svg.append("text")
+        .text("CO2 EMISSIONS")
+        .attr("class", "axisTitle")
+        .attr("transform","rotate(-90),translate(-240,-300)")
+        .attr("y", height);
+    
+    svg.append("text")
+        .text("ENERGY USE")
+        .attr("class", "axisTitle")
+        .attr("transform","translate(350,-10)")
+        .attr("y", height);
+    
 //    svg.select("g.y.axis")
 //        .append("line")
 //        .attr("x1", width)

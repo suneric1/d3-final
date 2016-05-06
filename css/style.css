@@ -1,18 +1,41 @@
-<!DOCTYPE html>
-<!-- This map code and design were inspired by the tutorial in Flowing Data: http://flowingdata.com/2015/02/19/make-an-interactive-map-with-category-filters/ -->
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto:900' rel='stylesheet' type='text/css'>
-    <title>Global Energy Use Overview in 2012</title>
-    <style>
+<style>
         body{
-            font-family: 'Open Sans', sans-serif;
+            font-family: 'Myriad Pro', sans-serif;
         }
+
+        #graphic {
+          padding-top: 60px;
+        }
+
+        #sections {
+            pointer-events: none;
+          position: relative;
+          display: inline-block;
+/*          width: 250px;*/
+          top: 0px;
+          z-index: 5;
+          padding-bottom: 20px;
+            text-align: justify;
+        }
+
+        .vizDiv {
+          display: none;
+          position: fixed;
+          top: 150px;
+          z-index: 1;
+          margin-left: 30px;
+          font-size: 10px;
+        }
+        
         h2{
             font-family: 'Roboto', sans-serif;
             text-align: center;
             margin: 30px;
+            margin-top: 120px;
+        }
+        #sections h3{
+            font-size: 20px;
+            margin-bottom: 30px;
         }
         p{
             margin-bottom: 30px;
@@ -94,8 +117,12 @@
         text.value{
             font-size: 12px;
         }
-        .bars_co2 .tick text, .scatterPlot .tick text, .connectedScatter .tick text{
+        .scatterPlot .tick text, .connectedScatter .tick text, .lineChart .tick text{
             font-size: 12px;
+            font-style: italic;
+        }
+        .bars_co2 .tick text{
+            font-size: 10px;
             font-style: italic;
         }
         .scatterPlot circle{
@@ -130,7 +157,7 @@
             fill: #E3314C;
             stroke-opacity: 0;
         }
-        .lineChart .outlier text.label{
+        .lineChart .outlier text.label, .scatterPlot text.label{
             fill: #E3314C;
             stroke-opacity: 0;
             font-family: 'Roboto', sans-serif;
@@ -184,8 +211,9 @@
             padding-bottom: 5px;
             border-radius: 4px;
             outline: none;
-            margin-right: 10px;
-            font-size: 12px;
+            margin-right: 2px;
+            margin-bottom: 10px;
+            font-size: 11px;
         }
         button:hover{
             background: #ffcccc;
@@ -195,87 +223,9 @@
             background: #E3314C;
             color: #fff;
         }
+        .axisTitle{
+            font-size: 30px;
+            opacity: 0.1;
+            font-family: monospace;
+        }
     </style>
-</head>
-
-<div class="row col-sm-8 col-sm-offset-2 main">
-
-<h2>Global Energy Use & CO2 Emissions Overview</h2>
-<p>Source: <a href="http://www.iea.org/statistics/">OECD/IEA</a>.<br/> As global warming is becoming a more and more severe problem, energy use is one of the major factors to be blame. This map shows the amount of energy used per capita in 2012, of oil equivalent.</p>
-
-<div id="mapViz"></div>
-
-<h3>CO2 Emissions (metric tons per capita)</h3>
-<p>The bar chart below shows 10 countries with highest per-capita CO2 emissions.</p>
-
-<button id="emissionBar" type="button" class="bar selected">Top Emissions</button><button id="energyBar" type="button" class="bar">Top Energy Use</button><button id="lowFossilBar" type="button" class="bar">Lowest Fossil Percentage</button>
-
-<div id="barViz"></div>
-
-<h3>Energy Use vs. CO2 Emissions</h3>
-<p>This scatter plot shows per-capita Energy Use vs CO2 emissions across countries.</p>
-
-<div id="scatterViz"></div>
-
-<h3>Energy Use in Years</h3>
-<p>Line chart.</p>
-
-<div id="lineViz"></div>
-
-<h3>Energy Use vs. CO2 Emissions in Years</h3>
-<p>Connected scatter plot.</p>
-
-<div id="connectedViz"></div>
-
-</div>
-
-<div id="tooltip" class="tooltip">
-    <h3 class="name"></h3>
-    <div class="title">Energy Use</div>
-    <div class="val"></div><br/>
-    <div class="desc">(kg of oil equivalent per capita)</div>
-</div>
-
-<div id="tooltipScatter" class="tooltip">
-    <h3 class="name"></h3>
-    <div class="title ene">Energy Use</div>
-    <div class="val ene"></div><br/>
-    <div class="desc ene">(kg of oil equivalent per capita)</div>
-    <div class="title co2">CO2 Emissions</div>
-    <div class="val co2"></div><br/>
-    <div class="desc co2">(metric tons per capita)</div>
-</div>
-
-<div id="tooltipLine" class="tooltip">
-    <h3 class="name"></h3>
-    <div class="title ene">Energy Use</div>
-    <div class="val ene"></div><br/>
-    <div class="desc ene">(kg of oil equivalent per capita)</div>
-</div>
-
-<div id="tooltipIceland" class="tooltip">
-    <h3 class="name"></h3>
-    <div class="title ene">Energy Use</div>
-    <div class="val ene"></div><br/>
-    <div class="desc ene">(kg of oil equivalent per capita)</div>
-    <div class="title co2">CO2 Emissions</div>
-    <div class="val co2"></div><br/>
-    <div class="desc co2">(metric tons per capita)</div>
-</div>
-
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="https://d3js.org/queue.v1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.9.0/d3-legend.js"></script>
-<script src="https://d3js.org/topojson.v1.min.js"></script>
-<script src="js/main.js"></script>
-<script src="js/map.js"></script>
-<script src="js/barChart.js"></script>
-<script src="js/scatter.js"></script>
-<script src="js/lineChart.js"></script>
-<script src="js/connectedScatter.js"></script>
-<script src="js/mfreeman_scroller.js"></script>
-<script src="js/scroller_settings2.js"></script>
-<!--<script src="js/d3.v3.min.js"></script>-->
-<!--<script src="js/d3-legend.min.js"></script>-->
-<!--<script src="js/queue.v1.min.js"></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.js"></script>-->

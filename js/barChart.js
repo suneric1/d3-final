@@ -1,6 +1,6 @@
 function barChartSection(emissions, energyUses, energy_data){
     
-    var fullWidth = 370,
+    var fullWidth = 380,
         fullHeight = 300,
         margin = {top:5, bottom:50, left:100, right:50},
         width = fullWidth - margin.left - margin.right,
