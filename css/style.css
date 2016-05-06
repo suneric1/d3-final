@@ -1,231 +1,242 @@
 <style>
-        body{
-            font-family: 'Myriad Pro', sans-serif;
-        }
+body{
+    font-family: 'Myriad Pro', sans-serif;
+}
 
-        #graphic {
-          padding-top: 60px;
-        }
+#graphic {
+  padding-top: 60px;
+}
 
-        #sections {
-            pointer-events: none;
-          position: relative;
-          display: inline-block;
+#sections {
+    pointer-events: none;
+  position: relative;
+  display: inline-block;
 /*          width: 250px;*/
-          top: 0px;
-          z-index: 5;
-          padding-bottom: 20px;
-            text-align: justify;
-        }
+  top: 0px;
+  z-index: 5;
+  padding-bottom: 20px;
+    text-align: justify;
+}
 
-        .vizDiv {
-          display: none;
-          position: fixed;
-          top: 150px;
-          z-index: 1;
-          margin-left: 30px;
-          font-size: 10px;
-        }
-        
-        h2{
-            font-family: 'Roboto', sans-serif;
-            text-align: center;
-            margin: 30px;
-            margin-top: 120px;
-        }
-        #sections h3{
-            font-size: 20px;
-            margin-bottom: 30px;
-        }
-        p{
-            margin-bottom: 30px;
-        }
-        rect.overlay{
-            fill: none;
-        }
-        .tooltip {
-            position: absolute;
-            z-index: 10;
-            text-align: left;
-            width: 200px;
-            padding: 10px;
-            font-size: 10px;
-            font-family: Helvetica, sans-serif;
-            background: #ffffff;
-            pointer-events: none;
-            opacity: 0;
-            border: #ccc 1px solid;
-        }
-        .tooltip h3 {
-          font-size: 14px; margin: 0 0 7px 0;
-          line-height: 1.2em;
-        }
-        .tooltip .val{
-            float: right;
-            font-size: 20px;
-        }
-        .tooltip .title{
-            float: left;
-        }
-        .tooltip .desc{
+.vizDiv {
+  display: none;
+  position: fixed;
+  top: 150px;
+  z-index: 1;
+  margin-left: 30px;
+  font-size: 10px;
+}
+
+h2{
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    margin: 30px;
+    margin-top: 120px;
+}
+#sections h3{
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+p{
+    margin-bottom: 30px;
+}
+rect.overlay{
+    fill: none;
+}
+.tooltip {
+    position: absolute;
+    z-index: 10;
+    text-align: left;
+    width: 200px;
+    padding: 10px;
+    font-size: 10px;
+    font-family: Helvetica, sans-serif;
+    background: #ffffff;
+    pointer-events: none;
+    opacity: 0;
+    border: #ccc 1px solid;
+}
+.tooltip h3 {
+  font-size: 14px; margin: 0 0 7px 0;
+  line-height: 1.2em;
+}
+.tooltip .val{
+    float: right;
+    font-size: 20px;
+}
+.tooltip .title{
+    float: left;
+}
+.tooltip .desc{
 /*            float: left;*/
-            font-size: 8px;
-            margin-bottom: 3px;
-        }
-        .countries {
-          stroke: #fff;
-          stroke-linejoin: round;
-        }
-        .countries path.selected {
-            stroke: #000;
-            stroke-width: 0.5px;
-        }
-        rect.bars_co2.selected{
-            fill: #FF1919;
-        }
-        .legend text.label{
-            font-size: 10px;
-            font-family: Helvetica, sans-serif;
-        }
-        .scalebutton {
-            cursor: pointer;
-        }
-        .tooltipChart .line{
-            fill: none;
-            stroke-width: 1.5px;
-            transition: 0.1s;
-            stroke: #E3314C;
-        }
-        .tooltipChart .area{
-            fill: #E3314C;
-            transition: 0.1s;
-            stroke: none;
-            opacity: 0.2;
-        }
-        .barChart.bars_co2 path, .scatterPlot path, .lineChart path, .connectedScatter path{
-            fill: none;
-        }
-        .axis .tick:first-child line, .axis line{
-            stroke: #999;
-            stroke-dasharray: 5,0;
-        }
-        
-        .tick line{
-            stroke: #999;
-            stroke-dasharray: 2,5;
-        }
-        text.value{
-            font-size: 12px;
-        }
-        .scatterPlot .tick text, .connectedScatter .tick text, .lineChart .tick text{
-            font-size: 12px;
-            font-style: italic;
-        }
-        .bars_co2 .tick text{
-            font-size: 10px;
-            font-style: italic;
-        }
-        .scatterPlot circle{
-            fill: #E3314C;
-            opacity: 0.3;
-        }
-        .scatterPlot circle.selected{
-            transition: all 0.2s;
-            fill: #E3314C;
-            opacity: 1;
-            stroke-width: 2px;
-            stroke: #fc5;
-        }
-        .lineChart .line{
-            fill: none;
-            stroke-width: 1px;
-            transition: 0.1s;
-            stroke: #aaa;
-            stroke-opacity: 0.3;
-        }
-        .lineChart .line.selected{
-            stroke-width: 1.5px;
-            stroke: #000;
-            stroke-opacity: 0.8;
-        }
-        .lineChart .outlier .line{
-            stroke-width: 1.5px;
-            stroke: #E3314C;
-            stroke-opacity: 0.8;
-        }
-        .lineChart .outlier circle{
-            fill: #E3314C;
-            stroke-opacity: 0;
-        }
-        .lineChart .outlier text.label, .scatterPlot text.label{
-            fill: #E3314C;
-            stroke-opacity: 0;
-            font-family: 'Roboto', sans-serif;
-            font-size: 12px;
-        }
-        .lineChart text.label{
-            fill: #000;
-            stroke-opacity: 0;
-            font-family: 'Roboto', sans-serif;
-            font-size: 12px;
-        }
-        .connectedScatter line.connect{
-            stroke: #aaa;
-            stroke-opacity: 0.2;
-        }
-        .connectedScatter circle{
-            fill: #aaa;
-            fill-opacity: 0;
-            stroke: #aaa;
-            stroke-opacity: 0.4;
-        }
-        .connectedScatter text.label{
-            fill: #aaa;
-            font-size: 12px;
-            opacity: 0.8;
-        }
-        .connectedScatter .current line.connect{
-            stroke: #E3314C;
-        }
-        .connectedScatter .current circle{
-            fill: #E3314C;
-            stroke: #E3314C;
-        }
-        .connectedScatter .current text.label{
-            fill: #E3314C;
-            opacity: 1;
-            font-size: 14px;
-            font-family: 'Roboto', sans-serif;
-        }
-        .connectedScatter circle.selected{
-            fill-opacity: 0.7;
-            stroke-opacity: 1;
-            stroke-width: 2px;
-        }
-        button{
-            background: #fff;
-            color: #E3314C;
-            border: 1px solid #E3314C;
-            padding: 7px;
-            padding-top: 5px;
-            padding-bottom: 5px;
-            border-radius: 4px;
-            outline: none;
-            margin-right: 2px;
-            margin-bottom: 10px;
-            font-size: 11px;
-        }
-        button:hover{
-            background: #ffcccc;
-            cursor: pointer;
-        }
-        button.selected{
-            background: #E3314C;
-            color: #fff;
-        }
-        .axisTitle{
-            font-size: 30px;
-            opacity: 0.1;
-            font-family: monospace;
-        }
-    </style>
+    font-size: 8px;
+    margin-bottom: 3px;
+}
+.countries {
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+.countries path.selected {
+    stroke: #444;
+    stroke-width: 1px;
+    stroke-opacity: 0.5;
+}
+rect.bars_co2.selected{
+    fill: #FF1919;
+}
+.legend text.label{
+    font-size: 10px;
+    font-family: Helvetica, sans-serif;
+}
+.scalebutton {
+    cursor: pointer;
+}
+.tooltipChart .line{
+    fill: none;
+    stroke-width: 1.5px;
+    transition: 0.1s;
+    stroke: #E3314C;
+}
+.tooltipChart .area{
+    fill: #E3314C;
+    transition: 0.1s;
+    stroke: none;
+    opacity: 0.2;
+}
+.barChart.bars_co2 path, .scatterPlot path, .lineChart path, .connectedScatter path{
+    fill: none;
+}
+.axis .tick:first-child line, .axis line{
+    stroke: #999;
+    stroke-dasharray: 5,0;
+}
+
+.tick line{
+    stroke: #999;
+    stroke-dasharray: 2,5;
+}
+text.value{
+    font-size: 12px;
+}
+.scatterPlot .tick text, .connectedScatter .tick text, .lineChart .tick text{
+    font-size: 12px;
+    font-style: italic;
+}
+.bars_co2 .tick text{
+    font-size: 10px;
+    font-style: italic;
+}
+.scatterPlot circle{
+    fill: #E3314C;
+    opacity: 0.3;
+}
+.scatterPlot circle.selected{
+    transition: all 0.2s;
+    fill: #E3314C;
+    opacity: 1;
+    stroke-width: 2px;
+    stroke: #fc5;
+}
+.lineChart .line{
+    fill: none;
+    stroke-width: 1px;
+    transition: 0.1s;
+    stroke: #aaa;
+    stroke-opacity: 0.3;
+}
+.lineChart .line.selected{
+    stroke-width: 1.5px;
+    stroke: #000;
+    stroke-opacity: 0.8;
+}
+.lineChart .outlier .line{
+    stroke-width: 1.5px;
+    stroke: #E3314C;
+    stroke-opacity: 0.8;
+}
+.lineChart .outlier .line.selected{
+    stroke-width: 3px;
+    stroke: #E3314C;
+    stroke-opacity: 1;
+}
+.lineChart .outlier circle{
+    fill: #E3314C;
+    stroke-opacity: 0;
+}
+.lineChart .outlier text.label, .scatterPlot text.label{
+    fill: #E3314C;
+    stroke-opacity: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+}
+.lineChart text.label{
+    fill: #000;
+    stroke-opacity: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+}
+.connectedScatter line.connect{
+    stroke: #aaa;
+    stroke-opacity: 0.2;
+}
+.connectedScatter circle{
+    fill: #aaa;
+    fill-opacity: 0;
+    stroke: #aaa;
+    stroke-opacity: 0.4;
+}
+.connectedScatter text.label{
+    fill: #aaa;
+    font-size: 12px;
+    opacity: 0.8;
+}
+.connectedScatter .current line.connect{
+    stroke: #E3314C;
+}
+.connectedScatter .current circle{
+    fill: #E3314C;
+    stroke: #E3314C;
+}
+.connectedScatter .current text.label{
+    fill: #E3314C;
+    opacity: 1;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+}
+.connectedScatter circle.selected{
+    fill-opacity: 0.2;
+    stroke-opacity: 6;
+    stroke-width: 1.5px;
+}
+button{
+    background: #fff;
+    color: #E3314C;
+    border: 1px solid #E3314C;
+    padding: 7px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 4px;
+    outline: none;
+    margin-right: 2px;
+    margin-bottom: 10px;
+    font-size: 11px;
+}
+button:hover{
+    background: #ffcccc;
+    cursor: pointer;
+}
+button.selected{
+    background: #E3314C;
+    color: #fff;
+}
+.axisTitle{
+    font-size: 30px;
+    opacity: 0.1;
+    font-family: monospace;
+}
+.hltext{
+    color: #E3314C;
+    cursor: pointer;
+    pointer-events: all;
+}
+</style>

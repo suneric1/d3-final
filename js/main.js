@@ -119,6 +119,15 @@ function ready(error, world, energy, emissions, energy_data) {
     
     connectedScatter(energy, emissions);
     
+    d3.selectAll(".hltext")
+        .on("mouseover",function(d){
+        highlight(d3.select(this).attr("id"));
+    })
+        .on("mouseout",function(d){
+        disHighlight(d3.select(this).attr("id"));
+        d3.select(".scatterPlot circle#ISL").classed("selected",true);
+    })
+    
     var scroll = scroller()
         .container(d3.select('#graphic'));
     scroll(d3.selectAll('.step'));
@@ -139,6 +148,7 @@ d3.selection.prototype.moveToFront = function() {
 };
     
 function highlight(id){
+    d3.selectAll("path#"+id).moveToFront();
     d3.selectAll("#"+id).classed("selected", true);
     console.log(id);
 }
