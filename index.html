@@ -1,57 +1,54 @@
 <!DOCTYPE html>
-<!-- This map code and design were inspired by the tutorial in Flowing Data: http://flowingdata.com/2015/02/19/make-an-interactive-map-with-category-filters/ -->
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:900' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300i,400,400i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
     <title>Iceland Found the Right Way to Use Energy</title>
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        body{
-                font-family: 'Open Sans', sans-serif;
-            }
-    </style>
 </head>
 
 <div class="row col-sm-10 col-sm-offset-1 container">
-   <div class="col-sm-10 col-sm-offset-1">
+   <div class="header col-sm-10 col-sm-offset-1">
         <h2>Iceland Found the Right Way to Use Energy</h2>
-       <p style="text-align:center">By <span style="font-style:italic">Zhiming Sun</span></p>
+       <div class="author">By <span style="font-style:italic">Zhiming Sun</span></div>
+       <p class="date">May 5, 2016</p>
        </div>
-   
+
     <div id="graphic">
         <div id="sections">
-            <section class="step col-sm-6 col-sm-offset-3">
+            <section id="para-1" class="active col-xs-8 col-xs-offset-2 col-md-6 col-md-offset-3">
                 <p>As global warming is becoming a more and more severe problem, energy use is one of the major factors to be blame, since it's a huge source of Greenhouse Gas. However, it's impossible to reduce the consumption of energy, not only because the immense demand for human development, but also due to the continuously growing population. An effective way to save our planet is to use energy efficiently and to use renewable energy.</p>
             </section>
-            
-            <section class="step col-sm-4 col-sm-offset-8">
+
+            <section id="para-2" class="col-sm-4 col-sm-offset-8">
                 <h3>Energy Use Over the World (metric tons per capita)</h3>
                 <p>This map shows the amount of energy used per capita in each country in 2012, of oil equivalent. You can see how the amount varies over years when you hover on a country. It's good to see that most developed countries seem to slow down the increase and even start to decrease energy use. </p><p>However, developing countries, such as <span id="CHN" class="hltext">China</span> and those in South America, are in a trend of boost.</p>
             </section>
-            
-            <section class="step col-sm-4 col-sm-offset-8">
+
+            <section id="para-3" class="col-sm-4 col-sm-offset-8">
                 <p>The country that stands out is <span id="ISL" class="hltext">Iceland</span>. It has much higher use of energy and has dramatically increased in the recent years. In the chart below, you can see it's even the country with highest energy use. What's more, it's also among the 10 countries with lowest percentage of fossil energy consumption.</p>
                 <div id="barViz" style="pointer-events: all">
                     <button id="emissionBar" type="button" class="bar selected">Top Emissions</button>
                     <button id="energyBar" type="button" class="bar">Top Energy Use</button>
-                    <button id="lowFossilBar" type="button" class="bar">Lowest Fossil Percentage</button>
+                    <button id="lowFossilBar" type="button" class="bar">Lowest Fossil %</button>
                     <div class="desc">Hover on bars to locate countries</div>
                 </div>
             </section>
 
-            <section class="step col-sm-4 col-sm-offset-8">
+            <section id="para-4" class="col-sm-4 col-sm-offset-8">
                 <h3>Energy Use vs. CO2 Emissions</h3>
                 <p>This scatter plot shows per-capita Energy Use vs CO2 emissions across countries. As far as we know, they should be proportional to each other. Surprisingly, though <span id="ISL" class="hltext">Iceland</span> has the highest energy use, its CO2 emissions are incredibly low. </p>
                 <p>It's the magic of renewable energy. According to Icelandic Energy Portal, about 85 percent of total primary energy supply in Iceland is derived from domestically produced renewable energy sources.</p>
             </section>
 
-            <section class="step col-sm-4 col-sm-offset-8">
+            <section id="para-5" class="col-sm-4 col-sm-offset-8">
                 <h3>Energy Use in Years</h3>
                 <p>Other than Iceland, there are 3 totally different types of country with different way using energy. Countries in Middle East, like <span id="QAT" class="hltext">Qatar</span>, typically use a lot of energy, while producing great amount of emissions. Developed countries like <span id="USA" class="hltext">the U.S</span>, as we mentioned above, has relatively high energy consumption, but the amount is stable. In terms of <span id="CHN" class="hltext">China</span>, though its energy use is not that huge per capita, it's population makes things worse.</p>
             </section>
 
-            <section class="step col-sm-4 col-sm-offset-8">
+            <section id="para-6" class="col-sm-4 col-sm-offset-8">
                 <h3>How Energy Use and CO2 Emissions Changed</h3>
                 <p>Here we can be definitely shocked by Iceland. While there are sufficient fossil resources in <span id="QAT" class="hltext">Qatar</span>, fossil energy in <span id="ISL" class="hltext">Iceland</span> is almost 100% imported. However, it exploits a bunch of clean energy resources, the majority of which is geothermal energy. That's why with such a great amount of energy consumption, it can still avoid destroying our planet.</p>
             </section>
@@ -66,7 +63,7 @@
     <div class="footer col-sm-10 col-sm-offset-1">
     <p><hr>
     <h4>Sources: </h4>
-    <a href="http://www.iea.org/statistics/">OECD/IEA</a>.<br/> 
+    <a href="http://www.iea.org/statistics/">OECD/IEA</a>.<br/>
     <a href="http://data.worldbank.org/topic/climate-change/">Climate Change - WORLDBANK</a>.<br/>
     <a href="http://data.worldbank.org/topic/energy-and-mining">Energy and Mining - WORLDBANK</a>.<br/>
     </p>
@@ -117,9 +114,7 @@
 <script src="js/scatter.js"></script>
 <script src="js/lineChart.js"></script>
 <script src="js/connectedScatter.js"></script>
-<script src="js/mfreeman_scroller.js"></script>
-<script src="js/scroller_settings2.js"></script>
-<!--<script src="js/d3.v3.min.js"></script>-->
-<!--<script src="js/d3-legend.min.js"></script>-->
-<!--<script src="js/queue.v1.min.js"></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.js"></script>-->
+<script src="js/noframework.waypoints.min.js"></script>
+<script src="js/waypoint.js"></script>
+<!-- <script src="js/mfreeman_scroller.js"></script> -->
+<!-- <script src="js/scroller_settings2.js"></script> -->

@@ -1,6 +1,5 @@
-<style>
 body{
-    font-family: 'Myriad Pro', sans-serif;
+    font-family: 'Lato', sans-serif;
 }
 
 #graphic {
@@ -27,19 +26,48 @@ body{
   font-size: 10px;
 }
 
-h2{
-    font-family: 'Roboto', sans-serif;
-    text-align: center;
-    margin: 30px;
-    margin-top: 120px;
+.header {
+  text-align: center;
 }
+
+h2{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    margin: 30px;
+    margin-top: 200px;
+}
+
+.date {
+  font-family: 'Arvo', serif;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #333;
+}
+
 #sections h3{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
     font-size: 20px;
     margin-bottom: 30px;
 }
+
+#para-6 {
+  padding-bottom: 20%;
+}
+
 p{
     margin-bottom: 30px;
 }
+
+section {
+  opacity: 0.1;
+  transition: all 0.5s;
+}
+
+section.active {
+  opacity: 1;
+}
+
 rect.overlay{
     fill: none;
 }
@@ -219,7 +247,7 @@ button{
     outline: none;
     margin-right: 2px;
     margin-bottom: 10px;
-    font-size: 11px;
+    font-size: 10px;
 }
 button:hover{
     background: #ffcccc;
@@ -239,4 +267,3 @@ button.selected{
     cursor: pointer;
     pointer-events: all;
 }
-</style>

@@ -1,6 +1,6 @@
 function mapSection(world, energy){
 
-    var width = 800,
+    var width = window.innerWidth * 0.5,
         height = 400,
         center = [width / 2, height / 2];
 
@@ -32,9 +32,9 @@ function mapSection(world, energy){
         .attr("height", height);
 
     var g = svg.append("g");
-    
+
     colorScale.domain([0,20000]);
-    
+
     g.append("g")
         .attr("class", "countries")
         .selectAll("path")
@@ -72,15 +72,15 @@ function mapSection(world, energy){
       .attr("class", "legend")
       .attr("transform", "translate(20," + (height-150) +")")
       .call(legend);
-    
+
     d3.selectAll(".cell").classed(".cell",false).attr("transform",function(d,i){
         return "translate(0," + i*15 + ")";
     })
     .select("text.label")
     .attr("transform", "translate(20,12)");
-    
-    
-    //tooltipChart 
+
+
+    //tooltipChart
     var ttfh = 120;
     var ttfw = 200;
 
@@ -115,7 +115,7 @@ function mapSection(world, energy){
         .y1(function(d){
             return yScale(+d.amount);
         });
-    
+
     drawTooltip(energy);
 
     function updateFill() {
@@ -206,7 +206,7 @@ function mapSection(world, energy){
       zoom.translate(t);
       g.style("stroke-width", 1 / s).attr("transform", "translate(" + t + ")scale(" + s + ")");
     }
-    
+
     function drawTooltip(energy){
 
         var tooltipChart = tooltip
