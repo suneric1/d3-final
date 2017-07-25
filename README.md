@@ -1,3 +1,3 @@
-# D3 Final Project
+# ENERGY USE DATA VISUALIZATION
 
-A repo for the final project of Interactive Data Visualization.
+A repo for my interactive data visualization project, *Iceland Found the Right Way to Use Energy*.
